@@ -1,11 +1,19 @@
 import argparse
-import scanner
+from scanners.ipv4_scanner import IPv4Scanner
+import services.scan_service as scan_service
+
 
 # define the functions here:
 def scan(args):
-    print("Scanning...")
-    findings = scanner.scan_files(args.file_path) 
-    print(f"Valid IP addresses found: {findings}")
+    # print("Scanning...")
+    # findings = scanner.scan_files(args.file_path) 
+    # print(f"Valid IP addresses found: {findings}")
+    # print("Scan complete.")
+    
+    scanners = scan_service.ScanService(scanners=
+                             [IPv4Scanner()])
+    results = scanners.scan_all(args.file_path)
+    print(f"Valid IP addresses found: {results}")
     print("Scan complete.")
 
 # add functions for command line arguments here.

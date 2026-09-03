@@ -1,0 +1,10 @@
+Scan this file for IP addresses.
+It should contain 1 match on line 3.
+this is the matches for IPv4: 198.51.100.14
+192.168.1.10
+999.999.999.999 # this is invalid and should be ignored!
+8.8.8.8
+
+IPv6:
+::1
+2001:db8::1

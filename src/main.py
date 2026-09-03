@@ -1,5 +1,3 @@
-import ipaddress
-
 import cli
 
 def main():
