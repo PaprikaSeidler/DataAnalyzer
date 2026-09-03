@@ -1,12 +1,13 @@
 import argparse
 from scanners.ipv4_scanner import IPv4Scanner
+from scanners.ipv6_scanner import IPv6Scanner
 from services import scan_service
 
 
 # define the functions here:
 def scan(args):
     scanners = scan_service.ScanService(scanners=
-                             [IPv4Scanner()])
+                             [IPv4Scanner(), IPv6Scanner()])
     try:
         results = scanners.scan_all(args.file_path)
         if results:

@@ -8,3 +8,4 @@ this is the matches for IPv4: 198.51.100.14
 IPv6:
 ::1
 2001:db8::1
+Global Unicast Address (Public internet): 2001:db8:85a3::8a2e:370:7334Unique Local Address (Private home or office network): fd00::1234:5678:9abc:def0Link-Local Address (Local network segment only): fe80::1ff:fe23:4567:890a

@@ -14,6 +14,6 @@ class IPv4Scanner(BaseScanner):
                 if parsed_ip.version == 4:
                     valid_ipv4_addresses.append(ip)
             except ValueError:
-                pass # skip invalid IP addresses
-
+                pass 
+            
         return valid_ipv4_addresses
