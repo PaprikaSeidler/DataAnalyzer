@@ -1,37 +1,86 @@
 # DataAnalyzer
 
-A CLI tool that scans text files for security-relevant findings and turns them into prioritized incidents — not just a list of matches.
+DataAnalyzer is a small command-line security analysis tool that scans text files for IP addresses and evaluates the results against configurable rules.
 
-**Status: work in progress.** Scanning is done and tested. A rule engine for severity and incidents is next.
+The goal is to go beyond simply detecting data: rules determine whether something is relevant and assign a severity, laying the groundwork for turning rule matches into prioritized incidents.
 
-## What it does
+> **Status: Work in Progress**
+>
+> The core scanning, rule configuration, rule evaluation, testing, and CI are implemented. Incident generation and additional analysis rules are currently being developed.
 
-Scans a file for IPv4/IPv6 addresses. Every regex match is validated through Python's `ipaddress` module, not trusted on its own — regex finds candidates, a real parser decides what's actually valid.
+## Features
 
-\```bash
-cd src
-python main.py scan ../ScanThisFile.txt
-\```
+- IPv4 and IPv6 scanning and validation
+- Configurable analysis rules stored in JSON
+- Severity levels stored per rule (basis for future incident prioritization)
+- Rule evaluation that turns scan results into rule matches
+- Unit and integration tests
+- Automated testing with GitHub Actions
 
-## How it's built
+## Architecture
 
-\```
-interfaces/  → IScanner contract
-scanners/    → BaseScanner (shared file logic) + IPv4/IPv6 implementations
-services/    → ScanService runs any registered scanner over a file
-\```
+The application follows a simple pipeline:
 
-New detection types plug in without touching existing code — a scanner only implements `_scan(content)`.
+```text
+Text file
+   ↓
+Scanners
+   ↓
+Scan results
+   ↓
+Rules
+   ↓
+Matches
+   ↓
+Incidents (planned)
+```
 
-## Tests
+Scanners are responsible for detecting data, while rules determine whether detected data represents something worth investigating. This keeps detection and analysis separate and makes it possible to add new rules without modifying the scanners.
 
-\```bash
+Rule matches are currently the end result of a scan. Turning matches into severity-ranked incidents is the next step on the roadmap.
+
+## Current Rules
+
+### SuspiciousIP
+
+Detects IP addresses from a configurable list of known suspicious addresses.
+
+**Severity:** High
+
+## Running the application
+
+From the project root:
+
+```bash
+python src/main.py scan ScanThisFile.txt
+```
+
+To evaluate a file against a specific rule:
+
+```bash
+python src/main.py evaluate SuspiciousIP ScanThisFile.txt
+```
+
+## Running the tests
+
+```bash
 pip install pytest
 python -m pytest
-\```
+```
 
-Unit + integration tests, run automatically on every push/PR via GitHub Actions.
+Tests are also run automatically through GitHub Actions on pushes and pull requests.
 
-## Next up
+## Roadmap
 
-A rule engine that evaluates scan results for relevance and severity (e.g. an unusually high number of IPs in one file, or a known-suspicious IP in a log), turning raw findings into incidents worth actually looking at. Docker support planned after that.
+The project is intentionally being developed incrementally. Planned improvements include:
+
+- Incident generation from rule matches
+- Additional analysis rules e.g. TooManyIPsInFile
+- Improved incident reporting
+- Persistent scan history
+- Correlation of incidents across multiple scans
+- Additional scanners and data types
+- Docker support for easier setup and deployment
+- A simple UI for browsing scans and incidents
+
+The focus is on keeping the system small, testable, and easy to reason about rather than adding complexity for its own sake.
