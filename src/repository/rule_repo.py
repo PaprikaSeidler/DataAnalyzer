@@ -54,3 +54,14 @@ class RuleRepository:
 
     def get_rules(self):
         return self.rules
+
+if __name__ == "__main__":
+    repo = RuleRepository()
+    rule1 = Rule("SuspiciousIP", "Detects known suspicious IP addresses", Severity.HIGH, {
+            "suspicious_ips": [
+                "203.0.113.10",
+                "198.51.100.25"
+            ]
+        })
+    repo.add_rule(rule1)
+
